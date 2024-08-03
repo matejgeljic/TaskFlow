@@ -4,8 +4,6 @@ import com.matejgeljic.taskflow.domain.entities.ProductEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 public interface ProductService {
     ProductEntity saveProduct(ProductEntity productEntity);
 

@@ -4,11 +4,9 @@ import com.matejgeljic.taskflow.domain.dto.OrderItemDto;
 import com.matejgeljic.taskflow.domain.dto.SalesOrderDto;
 import com.matejgeljic.taskflow.domain.entities.CustomerEntity;
 import com.matejgeljic.taskflow.domain.entities.OrderItemEntity;
-import com.matejgeljic.taskflow.domain.entities.ProductEntity;
 import com.matejgeljic.taskflow.domain.entities.SalesOrderEntity;
 import com.matejgeljic.taskflow.repositories.CustomerRepository;
 import com.matejgeljic.taskflow.repositories.OrderItemRepository;
-import com.matejgeljic.taskflow.repositories.ProductRepository;
 import com.matejgeljic.taskflow.repositories.SalesOrderRepository;
 import com.matejgeljic.taskflow.services.SalesOrderService;
 import org.springframework.data.domain.Page;
@@ -18,8 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class SalesOrderServiceImpl implements SalesOrderService {
@@ -44,19 +40,20 @@ public class SalesOrderServiceImpl implements SalesOrderService {
         salesOrderEntity.setCustomer(customerEntity);
 
         // Map order items from DTO
-        List<OrderItemEntity> orderItems = salesOrderDto.getOrderItems().stream()
-                .map(itemDto -> {
-                    Long orderItemId = itemDto.getId(); // assuming you're passing order item ID here
+        List<OrderItemEntity> orderItems = new ArrayList<>();
 
-                    // Link the order item entity if it already has the product info
-                    return orderItemRepository.findById(orderItemId)
-                            .orElseThrow(() -> new RuntimeException("Order item not found"));
-                }).collect(Collectors.toList());
+        for (OrderItemDto itemDto : salesOrderDto.getOrderItems()) {
+            Long orderItemId = itemDto.getId(); // Get the order item ID
+            OrderItemEntity orderItemEntity = orderItemRepository.findById(orderItemId)
+                    .orElseThrow(() -> new RuntimeException("Order item not found"));
+            orderItems.add(orderItemEntity);
+        }
 
         salesOrderEntity.setOrderItems(orderItems);
-
         salesOrderEntity.setStatus(salesOrderDto.getStatus());
-        salesOrderEntity.setTotalPrice(salesOrderDto.getTotalPrice());
+
+        Double totalPrice = calculateTotalPrice(orderItems);
+        salesOrderEntity.setTotalPrice(totalPrice);
 
         return salesOrderRepository.save(salesOrderEntity);
     }
@@ -82,8 +79,8 @@ public class SalesOrderServiceImpl implements SalesOrderService {
         }).orElseThrow(() -> new RuntimeException("Sales Order does not exist"));
     }
 
-    private Double calculateTotalPrice(SalesOrderEntity salesOrder) {
-        return salesOrder.getOrderItems().stream()
+    private Double calculateTotalPrice(List<OrderItemEntity> orderItems) {
+        return orderItems.stream()
                 .mapToDouble(orderItem -> orderItem.getProduct().getPrice() * orderItem.getQuantity())
                 .sum();
     }

@@ -1,10 +1,7 @@
 package com.matejgeljic.taskflow.services.impl;
 
-import com.matejgeljic.taskflow.domain.entities.OrderItemEntity;
 import com.matejgeljic.taskflow.services.TaxService;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class TaxServiceImpl implements TaxService {
