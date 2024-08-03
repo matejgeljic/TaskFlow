@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>task-flow</artifactId>
+    <groupId>com.matejgeljic</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>tflow-client</artifactId>
+  <name>Task flow client</name>
+
+  <properties>
+    <node.version>v16.13.0</node.version>
+    <npm.version>8.1.0</npm.version>
+    <frontend-maven-plugin.version>1.14.0</frontend-maven-plugin.version>
+    <frontend.build.output.dir>${basedir}/build</frontend.build.output.dir>
+    <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+    <npm-dependency-maven-plugin.version>1.0.0</npm-dependency-maven-plugin.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>tflow-server</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+      <plugins>
+        <plugin>
+          <groupId>com.github.eirslett</groupId>
+          <artifactId>frontend-maven-plugin</artifactId>
+          <version>${frontend-maven-plugin.version}</version>
+          <configuration>
+            <workingDirectory>src/main/tsx</workingDirectory>
+          </configuration>
+          <executions>
+            <execution>
+              <id>install-node-and-npm</id>
+              <goals>
+                <goal>install-node-and-npm</goal>
+              </goals>
+              <configuration>
+                <nodeVersion>${node.version}</nodeVersion>
+                <npmVersion>${npm.version}</npmVersion>
+              </configuration>
+            </execution>
+            <execution>
+              <id>npm-install</id>
+              <goals>
+                <goal>npm</goal>
+              </goals>
+              <configuration>
+                <arguments>install</arguments>
+                <workingDirectory>src/main/tsx</workingDirectory>
+              </configuration>
+            </execution>
+            <execution>
+              <id>format-typescript</id>
+              <phase>process-sources</phase>
+              <goals>
+                <goal>npm</goal>
+              </goals>
+              <configuration>
+                <skip>true</skip>
+                <arguments>run prettier</arguments>
+              </configuration>
+            </execution>
+            <execution>
+              <id>npm-build</id>
+              <phase>compile</phase>
+              <goals>
+                <goal>npm</goal>
+              </goals>
+              <configuration>
+                <skip>false</skip>
+                <arguments>run build</arguments>
+                <environmentVariables>
+                  <_JAVA_OPTIONS>-Xms256m -Xmx1024m</_JAVA_OPTIONS>
+                </environmentVariables>
+              </configuration>
+            </execution>
+            <execution>
+              <id>npm-test</id>
+              <goals>
+                <goal>npm</goal>
+              </goals>
+              <phase>test</phase>
+              <configuration>
+                <skip>false</skip>
+                <arguments>run coverage</arguments>
+                <environmentVariables>
+                  <CI>true</CI>
+                </environmentVariables>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven-resources-plugin.version}</version>
+          <executions>
+            <execution>
+              <id>Copy React build files</id>
+              <goals>
+                <goal>copy-resources</goal>
+              </goals>
+              <phase>prepare-package</phase>
+              <configuration>
+                <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
+                <resources>
+                  <resource>
+                    <directory>${frontend.build.output.dir}</directory>
+                  </resource>
+                </resources>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!--<plugin>
+          <groupId>cz.habarta.typescript-generator</groupId>
+          <artifactId>typescript-generator-maven-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>generate-typescript</id>
+              <goals>
+                <goal>generate</goal>
+              </goals>
+              <phase>generate-sources</phase>
+              <configuration>
+                <skip>false</skip>
+                <jsonLibrary>jackson2</jsonLibrary>
+                <jackson2Configuration>
+                  <enumsUsingToString>true</enumsUsingToString>
+                </jackson2Configuration>
+                <outputKind>module</outputKind>
+                <classPatterns>
+                  <pattern>com.matejgeljic.taskflow.domain.dto.*</pattern>
+                </classPatterns>
+                <excludeClasses>
+                  <excludeClass>java.io.Serializable</excludeClass>
+                </excludeClasses>
+                <outputFile>src/main/tsx/src/generated/bff-api.ts</outputFile>
+                <outputFileType>implementationFile</outputFileType>
+                <stringQuotes>singleQuotes</stringQuotes>
+                <noFileComment>true</noFileComment>
+                <mapEnum>asEnum</mapEnum>
+                <nonConstEnums>true</nonConstEnums>
+                <optionalProperties>useSpecifiedAnnotations</optionalProperties>
+               <optionalAnnotations>org.springframework.lang.Nullable</optionalAnnotations>
+                <generateSpringApplicationClient>true</generateSpringApplicationClient>
+                <generateSpringApplicationInterface>true</generateSpringApplicationInterface>
+                <restNamespacing>perResource</restNamespacing>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>-->
+      </plugins>
+  </build>
+</project>
