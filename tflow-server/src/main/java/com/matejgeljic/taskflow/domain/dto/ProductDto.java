@@ -27,8 +27,5 @@ public class ProductDto {
     private Integer stockQuantity;
     @NotNull(message = "305")
     @NotEmpty(message = "305")
-    private Boolean isTaxable;
-    @NotNull(message = "306")
-    @NotEmpty(message = "306")
     private Boolean isArchived;
 }

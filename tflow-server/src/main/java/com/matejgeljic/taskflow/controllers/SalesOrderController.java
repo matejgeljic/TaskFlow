@@ -1,6 +1,8 @@
 package com.matejgeljic.taskflow.controllers;
 
 import com.matejgeljic.taskflow.domain.dto.SalesOrderDto;
+import com.matejgeljic.taskflow.domain.dto.SalesOrderStatus;
+import com.matejgeljic.taskflow.domain.dto.SalesOrderStatusUpdateDto;
 import com.matejgeljic.taskflow.domain.entities.SalesOrderEntity;
 import com.matejgeljic.taskflow.mappers.Mapper;
 import com.matejgeljic.taskflow.services.SalesOrderService;
@@ -10,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RequestMapping(path = "sales-orders")
 @RestController
@@ -39,15 +43,13 @@ public class SalesOrderController {
     @PatchMapping(path = "/{id}")
     public ResponseEntity<SalesOrderDto> partialUpdateSalesOrder(
             @PathVariable("id") Long id,
-            @RequestBody SalesOrderDto salesOrderDto
+            @RequestBody SalesOrderStatusUpdateDto status
     ) {
         if(!salesOrderService.isExists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        SalesOrderEntity salesOrderEntity = salesOrderMapper.mapFrom(salesOrderDto);
-        SalesOrderEntity updatedSalesOrder = salesOrderService.partialUpdateSalesOrder(id, salesOrderEntity);
-
+        SalesOrderEntity updatedSalesOrder = salesOrderService.partialUpdateSalesOrder(id, status.getStatus());
         return new ResponseEntity<>(salesOrderMapper.mapTo(updatedSalesOrder), HttpStatus.OK);
     }
 }

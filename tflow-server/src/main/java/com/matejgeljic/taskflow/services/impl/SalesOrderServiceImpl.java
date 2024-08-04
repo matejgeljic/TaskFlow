@@ -2,6 +2,7 @@ package com.matejgeljic.taskflow.services.impl;
 
 import com.matejgeljic.taskflow.domain.dto.OrderItemDto;
 import com.matejgeljic.taskflow.domain.dto.SalesOrderDto;
+import com.matejgeljic.taskflow.domain.dto.SalesOrderStatus;
 import com.matejgeljic.taskflow.domain.entities.CustomerEntity;
 import com.matejgeljic.taskflow.domain.entities.OrderItemEntity;
 import com.matejgeljic.taskflow.domain.entities.SalesOrderEntity;
@@ -69,12 +70,9 @@ public class SalesOrderServiceImpl implements SalesOrderService {
     }
 
     @Override
-    public SalesOrderEntity partialUpdateSalesOrder(Long id, SalesOrderEntity salesOrderEntity) {
-        salesOrderEntity.setId(id);
-
+    public SalesOrderEntity partialUpdateSalesOrder(Long id, SalesOrderStatus status) {
         return salesOrderRepository.findById(id).map(existingSalesOrder -> {
-            Optional.ofNullable(salesOrderEntity.getStatus()).ifPresent(existingSalesOrder::setStatus);
-
+            existingSalesOrder.setStatus(status);
             return salesOrderRepository.save(existingSalesOrder);
         }).orElseThrow(() -> new RuntimeException("Sales Order does not exist"));
     }

@@ -18,6 +18,5 @@ public class ProductEntity {
     private Double price;
     private Double rating;
     private Integer stockQuantity;
-    private Boolean isTaxable;
     private Boolean isArchived;
 }
