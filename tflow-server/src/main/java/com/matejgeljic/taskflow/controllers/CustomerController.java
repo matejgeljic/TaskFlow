@@ -5,6 +5,7 @@ import com.matejgeljic.taskflow.domain.entities.CustomerEntity;
 import com.matejgeljic.taskflow.mappers.Mapper;
 import com.matejgeljic.taskflow.services.CustomerService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<CustomerDto> createCustomer(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<CustomerDto> createCustomer(@Valid @RequestBody CustomerDto customerDto) {
         CustomerEntity customerEntity = customerMapper.mapFrom(customerDto);
         CustomerEntity savedCustomerEntity = customerService.saveCustomer(customerEntity);
         return new ResponseEntity<>(customerMapper.mapTo(savedCustomerEntity), HttpStatus.CREATED);
@@ -40,7 +41,7 @@ public class CustomerController {
     @PutMapping(path = "/{id}")
     public ResponseEntity<CustomerDto> fullUpdateCustomer(
             @PathVariable("id") Long id,
-            @RequestBody CustomerDto customerDto) {
+            @Valid @RequestBody CustomerDto customerDto) {
         if(!customerService.isExists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

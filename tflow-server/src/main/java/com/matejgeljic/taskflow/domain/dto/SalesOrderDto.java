@@ -1,6 +1,6 @@
 package com.matejgeljic.taskflow.domain.dto;
 
-import jakarta.validation.constraints.NotEmpty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,13 +16,11 @@ import java.util.List;
 public class SalesOrderDto {
     private Long id;
     @NotNull(message = "400")
-    @NotEmpty(message = "400")
     private CustomerDto customer;
     @NotNull(message = "401")
-    @NotEmpty(message = "401")
     private List<OrderItemDto> orderItems;
     @NotNull(message = "402")
-    @NotEmpty(message = "402")
     private SalesOrderStatus status;
+    @JsonIgnore
     private Double totalPrice;
 }

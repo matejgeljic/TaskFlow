@@ -1,6 +1,5 @@
 package com.matejgeljic.taskflow.domain.dto;
 
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +12,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class SalesOrderStatusUpdateDto {
     @NotNull(message = "500")
-    @NotEmpty(message = "500")
     private SalesOrderStatus status;
 }

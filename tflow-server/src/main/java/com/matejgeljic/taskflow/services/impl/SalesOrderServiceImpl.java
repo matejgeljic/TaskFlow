@@ -6,12 +6,14 @@ import com.matejgeljic.taskflow.domain.dto.SalesOrderStatus;
 import com.matejgeljic.taskflow.domain.entities.CustomerEntity;
 import com.matejgeljic.taskflow.domain.entities.OrderItemEntity;
 import com.matejgeljic.taskflow.domain.entities.SalesOrderEntity;
+import com.matejgeljic.taskflow.exceptions.TaskFlowException;
 import com.matejgeljic.taskflow.repositories.CustomerRepository;
 import com.matejgeljic.taskflow.repositories.OrderItemRepository;
 import com.matejgeljic.taskflow.repositories.SalesOrderRepository;
 import com.matejgeljic.taskflow.services.SalesOrderService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
         // Fetch and set customer entity
         Long customerId = salesOrderDto.getCustomer().getId();
         CustomerEntity customerEntity = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new TaskFlowException("Customer not found", HttpStatus.NOT_FOUND));
         salesOrderEntity.setCustomer(customerEntity);
 
         // Map order items from DTO
@@ -46,7 +48,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
         for (OrderItemDto itemDto : salesOrderDto.getOrderItems()) {
             Long orderItemId = itemDto.getId(); // Get the order item ID
             OrderItemEntity orderItemEntity = orderItemRepository.findById(orderItemId)
-                    .orElseThrow(() -> new RuntimeException("Order item not found"));
+                    .orElseThrow(() -> new TaskFlowException("Order item not found", HttpStatus.NOT_FOUND));
             orderItems.add(orderItemEntity);
         }
 
@@ -74,7 +76,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
         return salesOrderRepository.findById(id).map(existingSalesOrder -> {
             existingSalesOrder.setStatus(status);
             return salesOrderRepository.save(existingSalesOrder);
-        }).orElseThrow(() -> new RuntimeException("Sales Order does not exist"));
+        }).orElseThrow(() -> new TaskFlowException("Sales Order does not exist", HttpStatus.NOT_FOUND));
     }
 
     private Double calculateTotalPrice(List<OrderItemEntity> orderItems) {

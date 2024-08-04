@@ -5,6 +5,7 @@ import com.matejgeljic.taskflow.domain.entities.OrderItemEntity;
 import com.matejgeljic.taskflow.mappers.Mapper;
 import com.matejgeljic.taskflow.services.OrderItemService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +27,7 @@ public class OrderItemController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderItemDto> createOrderItem(@RequestBody OrderItemDto orderItem) {
+    public ResponseEntity<OrderItemDto> createOrderItem(@Valid  @RequestBody OrderItemDto orderItem) {
         OrderItemEntity savedOrderItem = orderItemService.createOrderItem(orderItem);
 
         return new ResponseEntity<>(orderItemMapper.mapTo(savedOrderItem), HttpStatus.CREATED);

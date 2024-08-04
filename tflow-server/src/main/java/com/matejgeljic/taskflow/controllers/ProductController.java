@@ -5,6 +5,7 @@ import com.matejgeljic.taskflow.domain.entities.ProductEntity;
 import com.matejgeljic.taskflow.mappers.Mapper;
 import com.matejgeljic.taskflow.services.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto product) {
+    public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody ProductDto product) {
         ProductEntity productEntity = productMapper.mapFrom(product);
         ProductEntity savedProductEntity = productService.saveProduct(productEntity);
         return new ResponseEntity<>(productMapper.mapTo(savedProductEntity), HttpStatus.CREATED);
@@ -42,7 +43,7 @@ public class ProductController {
     @PutMapping(path = "/{id}")
     public ResponseEntity<ProductDto> fullUpdateProduct(
             @PathVariable("id") Long id,
-            @RequestBody ProductDto productDto) {
+            @Valid @RequestBody ProductDto productDto) {
         if(!productService.isExists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

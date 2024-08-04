@@ -1,19 +1,17 @@
 package com.matejgeljic.taskflow.controllers;
 
 import com.matejgeljic.taskflow.domain.dto.SalesOrderDto;
-import com.matejgeljic.taskflow.domain.dto.SalesOrderStatus;
 import com.matejgeljic.taskflow.domain.dto.SalesOrderStatusUpdateDto;
 import com.matejgeljic.taskflow.domain.entities.SalesOrderEntity;
 import com.matejgeljic.taskflow.mappers.Mapper;
 import com.matejgeljic.taskflow.services.SalesOrderService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RequestMapping(path = "sales-orders")
 @RestController
@@ -28,7 +26,7 @@ public class SalesOrderController {
     }
 
     @PostMapping
-    public ResponseEntity<SalesOrderDto> createSalesOrder(@RequestBody SalesOrderDto salesOrder) {
+    public ResponseEntity<SalesOrderDto> createSalesOrder(@Valid  @RequestBody SalesOrderDto salesOrder) {
         SalesOrderEntity savedSalesOrder = salesOrderService.createSalesOrder(salesOrder);
         return new ResponseEntity<>(salesOrderMapper.mapTo(savedSalesOrder), HttpStatus.CREATED);
     }
@@ -43,7 +41,7 @@ public class SalesOrderController {
     @PatchMapping(path = "/{id}")
     public ResponseEntity<SalesOrderDto> partialUpdateSalesOrder(
             @PathVariable("id") Long id,
-            @RequestBody SalesOrderStatusUpdateDto status
+            @Valid @RequestBody SalesOrderStatusUpdateDto status
     ) {
         if(!salesOrderService.isExists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
