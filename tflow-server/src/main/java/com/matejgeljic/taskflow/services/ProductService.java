@@ -11,7 +11,7 @@ public interface ProductService {
 
     boolean isExists(Long id);
 
-//    ProductEntity reduceQuantity(Long id, Integer quantity);
+    ProductEntity reduceQuantity(Long id, Integer quantity);
 
     void deleteProduct(Long id);
 }
