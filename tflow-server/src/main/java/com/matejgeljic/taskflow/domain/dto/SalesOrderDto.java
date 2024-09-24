@@ -8,13 +8,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class SalesOrderDto {
-    private Long id;
+    private UUID id;
     @NotNull(message = "400")
     private CustomerDto customer;
     @NotNull(message = "401")

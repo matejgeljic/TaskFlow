@@ -4,5 +4,7 @@ import com.matejgeljic.taskflow.domain.entities.SalesOrderEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface SalesOrderRepository extends CrudRepository<SalesOrderEntity, Long>, PagingAndSortingRepository<SalesOrderEntity, Long> {
+import java.util.UUID;
+
+public interface SalesOrderRepository extends CrudRepository<SalesOrderEntity, UUID>, PagingAndSortingRepository<SalesOrderEntity, UUID> {
 }

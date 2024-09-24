@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RequestMapping(path = "sales-orders")
 @RestController
 @Tag(name = "Sales Order")
@@ -39,15 +41,15 @@ public class SalesOrderController {
     }
 
     @PatchMapping(path = "/{id}")
-    public ResponseEntity<SalesOrderDto> partialUpdateSalesOrder(
-            @PathVariable("id") Long id,
+    public ResponseEntity<SalesOrderDto> updateSalesOrderStatus(
+            @PathVariable("id") UUID id,
             @Valid @RequestBody SalesOrderStatusUpdateDto status
     ) {
         if(!salesOrderService.isExists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        SalesOrderEntity updatedSalesOrder = salesOrderService.partialUpdateSalesOrder(id, status.getStatus());
+        SalesOrderEntity updatedSalesOrder = salesOrderService.updateSalesOrderStatus(id, status.getStatus());
         return new ResponseEntity<>(salesOrderMapper.mapTo(updatedSalesOrder), HttpStatus.OK);
     }
 }

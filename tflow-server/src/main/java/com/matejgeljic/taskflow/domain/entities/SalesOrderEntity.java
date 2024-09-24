@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -17,8 +18,9 @@ import java.util.List;
 @Table(name = "salesOrder")
 public class SalesOrderEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "salesOrder_id_seq")
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(columnDefinition = "UUID")
+    private UUID id;
 
     @ManyToOne()
     @JoinColumn(name = "customer_id")

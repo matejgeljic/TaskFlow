@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class SalesOrderServiceImpl implements SalesOrderService {
@@ -40,7 +41,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
     public SalesOrderEntity createSalesOrder(SalesOrderDto salesOrderDto) {
         SalesOrderEntity salesOrderEntity = new SalesOrderEntity();
 
-        Long customerId = salesOrderDto.getCustomer().getId();
+        UUID customerId = salesOrderDto.getCustomer().getId();
         CustomerEntity customerEntity = customerRepository.findById(customerId)
                 .orElseThrow(() -> new TaskFlowException("Customer not found", HttpStatus.NOT_FOUND));
         salesOrderEntity.setCustomer(customerEntity);
@@ -48,7 +49,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
         List<OrderItemEntity> orderItems = new ArrayList<>();
 
         for (OrderItemDto itemDto : salesOrderDto.getOrderItems()) {
-            Long orderItemId = itemDto.getId();
+            UUID orderItemId = itemDto.getId();
             OrderItemEntity orderItemEntity = orderItemRepository.findById(orderItemId)
                     .orElseThrow(() -> new TaskFlowException("Order item not found", HttpStatus.NOT_FOUND));
 
@@ -73,12 +74,12 @@ public class SalesOrderServiceImpl implements SalesOrderService {
     }
 
     @Override
-    public boolean isExists(Long id) {
+    public boolean isExists(UUID id) {
         return salesOrderRepository.existsById(id);
     }
 
     @Override
-    public SalesOrderEntity partialUpdateSalesOrder(Long id, SalesOrderStatus status) {
+    public SalesOrderEntity updateSalesOrderStatus(UUID id, SalesOrderStatus status) {
         return salesOrderRepository.findById(id).map(existingSalesOrder -> {
             existingSalesOrder.setStatus(status);
             return salesOrderRepository.save(existingSalesOrder);

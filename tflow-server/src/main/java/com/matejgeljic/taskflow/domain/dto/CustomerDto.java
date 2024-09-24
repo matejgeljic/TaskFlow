@@ -7,21 +7,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.UniqueElements;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class CustomerDto {
-    private Long id;
+    private UUID id;
     @NotBlank(message = "100")
     private String firstName;
     @NotBlank(message = "101")
     private String lastName;
     @NotBlank(message = "102")
     @Email
-    @UniqueElements(message = "103")
     private String email;
     @NotBlank(message = "104")
     @Pattern(regexp="(^$|[0-9]{10})", message = "105")

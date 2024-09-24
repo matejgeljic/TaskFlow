@@ -8,12 +8,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class ProductDto {
-    private Long id;
+    private UUID id;
     @NotBlank(message = "300")
     private String name;
     @NotBlank(message = "301")

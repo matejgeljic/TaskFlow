@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
@@ -26,12 +28,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public boolean isExists(Long id) {
+    public boolean isExists(UUID id) {
         return customerRepository.existsById(id);
     }
 
     @Override
-    public void deleteCustomer(Long id) {
+    public void deleteCustomer(UUID id) {
         customerRepository.deleteById(id);
     }
 }

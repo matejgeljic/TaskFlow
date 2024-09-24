@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,8 +16,9 @@ import lombok.NoArgsConstructor;
 @Table(name = "orderItem")
 public class OrderItemEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderItem_id_seq")
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(columnDefinition = "UUID")
+    private UUID id;
     private Integer quantity;
 
     @ManyToOne()

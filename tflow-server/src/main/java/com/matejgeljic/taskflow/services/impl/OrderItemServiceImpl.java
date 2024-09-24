@@ -10,6 +10,8 @@ import com.matejgeljic.taskflow.services.OrderItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class OrderItemServiceImpl implements OrderItemService {
 
@@ -26,7 +28,7 @@ public class OrderItemServiceImpl implements OrderItemService {
         OrderItemEntity orderItemEntity = new OrderItemEntity();
         orderItemEntity.setQuantity(orderItemDto.getQuantity());
 
-        Long productId = orderItemDto.getProduct().getId();
+        UUID productId = orderItemDto.getProduct().getId();
         ProductEntity productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new TaskFlowException("Product not found", HttpStatus.NOT_FOUND));
 

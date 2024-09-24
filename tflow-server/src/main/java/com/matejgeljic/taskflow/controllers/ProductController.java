@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RequestMapping(path = "products")
 @RestController
 @Tag(name = "Product")
@@ -42,7 +44,7 @@ public class ProductController {
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<ProductDto> fullUpdateProduct(
-            @PathVariable("id") Long id,
+            @PathVariable("id") UUID id,
             @Valid @RequestBody ProductDto productDto) {
         if(!productService.isExists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -56,7 +58,7 @@ public class ProductController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity deleteProduct (@PathVariable("id") Long id) {
+    public ResponseEntity deleteProduct (@PathVariable("id") UUID id) {
         productService.deleteProduct(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

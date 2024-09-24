@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RequestMapping(path = "customers")
 @RestController
 @Tag(name = "Customer")
@@ -40,7 +42,7 @@ public class CustomerController {
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<CustomerDto> fullUpdateCustomer(
-            @PathVariable("id") Long id,
+            @PathVariable("id") UUID id,
             @Valid @RequestBody CustomerDto customerDto) {
         if(!customerService.isExists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -54,7 +56,7 @@ public class CustomerController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity deleteCustomer(@PathVariable("id") Long id) {
+    public ResponseEntity deleteCustomer(@PathVariable("id") UUID id) {
         customerService.deleteCustomer(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

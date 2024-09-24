@@ -4,14 +4,16 @@ import com.matejgeljic.taskflow.domain.entities.ProductEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.UUID;
+
 public interface ProductService {
     ProductEntity saveProduct(ProductEntity productEntity);
 
     Page<ProductEntity> findAll(Pageable pageable);
 
-    boolean isExists(Long id);
+    boolean isExists(UUID id);
 
-    ProductEntity reduceQuantity(Long id, Integer quantity);
+    ProductEntity reduceQuantity(UUID id, Integer quantity);
 
-    void deleteProduct(Long id);
+    void deleteProduct(UUID id);
 }

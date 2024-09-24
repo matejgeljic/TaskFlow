@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 
@@ -29,12 +31,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean isExists(Long id) {
+    public boolean isExists(UUID id) {
         return productRepository.existsById(id);
     }
 
     @Override
-    public ProductEntity reduceQuantity(Long id, Integer quantity) {
+    public ProductEntity reduceQuantity(UUID id, Integer quantity) {
         return productRepository.findById(id).map(item -> {
             if (item.getStockQuantity() < quantity) {
                 throw new TaskFlowException("Stock quantity is too low", HttpStatus.BAD_REQUEST);
@@ -45,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteProduct(Long id) {
+    public void deleteProduct(UUID id) {
         productRepository.deleteById(id);
     }
 }

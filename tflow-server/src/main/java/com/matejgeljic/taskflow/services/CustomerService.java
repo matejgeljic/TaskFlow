@@ -4,13 +4,15 @@ import com.matejgeljic.taskflow.domain.entities.CustomerEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.UUID;
+
 
 public interface CustomerService {
     CustomerEntity saveCustomer(CustomerEntity customer);
 
     Page<CustomerEntity> findAll(Pageable pageable);
 
-    boolean isExists(Long id);
+    boolean isExists(UUID id);
 
-    void deleteCustomer(Long id);
+    void deleteCustomer(UUID id);
 }

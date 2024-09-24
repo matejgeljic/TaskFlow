@@ -6,12 +6,14 @@ import com.matejgeljic.taskflow.domain.entities.SalesOrderEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.UUID;
+
 public interface SalesOrderService {
     SalesOrderEntity createSalesOrder(SalesOrderDto salesOrderDto);
 
     Page<SalesOrderEntity> findAll(Pageable pageable);
 
-    boolean isExists(Long id);
+    boolean isExists(UUID id);
 
-    SalesOrderEntity partialUpdateSalesOrder(Long id, SalesOrderStatus status);
+    SalesOrderEntity updateSalesOrderStatus(UUID id, SalesOrderStatus status);
 }

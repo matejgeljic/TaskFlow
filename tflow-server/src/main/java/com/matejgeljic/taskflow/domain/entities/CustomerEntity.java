@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -14,8 +15,9 @@ import lombok.NoArgsConstructor;
 @Table(name = "customer")
 public class CustomerEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_id_seq")
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(columnDefinition = "UUID")
+    private UUID id;
     private String firstName;
     private String lastName;
     private String email;
