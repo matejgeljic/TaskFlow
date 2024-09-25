@@ -29,12 +29,14 @@ public class SalesOrderServiceImpl implements SalesOrderService {
     private final CustomerRepository customerRepository;
     private final OrderItemRepository orderItemRepository;
     private final ProductService productService;
+    private final ProductRepository productRepository;
 
-    public SalesOrderServiceImpl(SalesOrderRepository salesOrderRepository, CustomerRepository customerRepository, OrderItemRepository orderItemRepository, ProductRepository productRepository, ProductService productService) {
+    public SalesOrderServiceImpl(SalesOrderRepository salesOrderRepository, CustomerRepository customerRepository, OrderItemRepository orderItemRepository, ProductRepository productRepository, ProductService productService, ProductRepository productRepository1) {
         this.salesOrderRepository = salesOrderRepository;
         this.customerRepository = customerRepository;
         this.orderItemRepository = orderItemRepository;
         this.productService = productService;
+        this.productRepository = productRepository1;
     }
 
     @Override
@@ -81,6 +83,13 @@ public class SalesOrderServiceImpl implements SalesOrderService {
     @Override
     public SalesOrderEntity updateSalesOrderStatus(UUID id, SalesOrderStatus status) {
         return salesOrderRepository.findById(id).map(existingSalesOrder -> {
+            if(SalesOrderStatus.CANCELLED.equals(status)) {
+                for (OrderItemEntity orderItem  : existingSalesOrder.getOrderItems()) {
+                    ProductEntity product = orderItem .getProduct();
+                    product.setStockQuantity(product.getStockQuantity() + orderItem.getQuantity());
+                    productRepository.save(product);
+                }
+            }
             existingSalesOrder.setStatus(status);
             return salesOrderRepository.save(existingSalesOrder);
         }).orElseThrow(() -> new TaskFlowException("Sales Order does not exist", HttpStatus.NOT_FOUND));
