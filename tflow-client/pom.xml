@@ -140,6 +140,7 @@
                 <outputKind>module</outputKind>
                 <classPatterns>
                   <classPattern>com.matejgeljic.taskflow.domain.dto.**</classPattern>
+                  <classPattern>com.matejgeljic.taskflow.controllers.**</classPattern>
                 </classPatterns>
                 <excludeClasses>
                   <excludeClass>java.io.Serializable</excludeClass>
