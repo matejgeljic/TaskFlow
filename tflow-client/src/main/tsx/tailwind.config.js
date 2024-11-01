@@ -10,6 +10,9 @@ export default {
             secondaryPressed: '#458B71',
             danger: '#F57E77',
             dangerPressed: '#C95F58',
+            base: '#F4F5FA',
+            font: '#53545C',
+            white: '#FFFFFF'
         },
         fontFamily: {
             poppins: ["Poppins", "sans-serif"],
