@@ -1,10 +1,15 @@
 import React from 'react';
-import { Navigation } from './components/navigation/Navigation';
+import { Sidebar } from './components/navigation/Sidebar';
+import { Topbar } from './components/navigation/Topbar';
 
 const App = () => {
   return (
-    <main className="bg-base">
-      <Navigation />
+    <main className="flex bg-base">
+      <Sidebar />
+      <div className={'w-full'}>
+        <Topbar />
+        content
+      </div>
     </main>
   );
 };
