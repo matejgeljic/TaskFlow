@@ -1,6 +1,7 @@
 import { IconType } from 'react-icons';
 import React, { Dispatch, SetStateAction } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 export interface SidebarItemProps {
   Icon: IconType;
@@ -8,10 +9,14 @@ export interface SidebarItemProps {
   selected: string;
   setSelected: Dispatch<SetStateAction<string>>;
   isExpanded: boolean;
+  path: string;
 }
-const SidebarItem = ({ Icon, title, selected, setSelected, isExpanded }: SidebarItemProps) => {
+const SidebarItem = ({ Icon, title, selected, setSelected, isExpanded, path }: SidebarItemProps) => {
+  const navigation = useNavigate();
+
   const handleClick = () => {
     setSelected(title);
+    navigation(path);
   };
   const titleClass = selected === title ? 'text-white bg-primary' : 'text-font';
   const titleSection = isExpanded && (
@@ -21,12 +26,12 @@ const SidebarItem = ({ Icon, title, selected, setSelected, isExpanded }: Sidebar
   );
 
   return (
-    <motion.span layout onClick={handleClick} className={'flex h-10 w-full items-center gap-4 rounded-md p-6 ' + titleClass}>
-      <motion.div layout className="grid h-full w-10 place-content-center text-lg">
+    <motion.div layout onClick={handleClick} className={'flex h-10 w-full cursor-pointer items-center gap-4 rounded-md p-6 ' + titleClass}>
+      <motion.span className="grid h-full w-10 place-content-center text-lg">
         <Icon />
-      </motion.div>
+      </motion.span>
       {titleSection}
-    </motion.span>
+    </motion.div>
   );
 };
 

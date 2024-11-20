@@ -1,28 +1,33 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FiUsers, FiFolder, FiGrid, FiPackage } from 'react-icons/fi';
 import SidebarTitleSection from './SidebarTitleSection';
 import SidebarItem from './SidebarItem';
 import SidebarToggle from './SidebarToggle';
-
-export interface SidebarProps {
-  onPageContentWidthChange: () => void;
-}
+import { SIDEBAR_ITEMS } from '../../../constants';
 
 const Sidebar = () => {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState<boolean>(true);
   const [selected, setSelected] = useState('Dashboard');
 
-  const navigationWidth = isExpanded ? 'w-72' : 'w-fit';
+  const sidebarItems = SIDEBAR_ITEMS.map((item) => {
+    return (
+      <SidebarItem
+        key={item.title}
+        Icon={item.icon}
+        title={item.title}
+        selected={selected}
+        setSelected={setSelected}
+        isExpanded={isExpanded}
+        path={item.path}
+      />
+    );
+  });
 
   return (
-    <motion.aside layout className={'flex h-screen flex-col gap-4 bg-white px-6 ' + navigationWidth}>
+    <motion.aside layout animate={{ width: isExpanded ? '288px' : '138px' }} className={'relative flex h-screen flex-col gap-4 bg-white px-6'}>
       <SidebarTitleSection isExpanded={isExpanded} />
-      <SidebarItem Icon={FiGrid} title={'Dashboard'} selected={selected} setSelected={setSelected} isExpanded={isExpanded} />
-      <SidebarItem Icon={FiPackage} title={'Orders'} selected={selected} setSelected={setSelected} isExpanded={isExpanded} />
-      <SidebarItem Icon={FiUsers} title={'Customers'} selected={selected} setSelected={setSelected} isExpanded={isExpanded} />
-      <SidebarItem Icon={FiFolder} title={'Inventory'} selected={selected} setSelected={setSelected} isExpanded={isExpanded} />
       <SidebarToggle isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
+      {sidebarItems}
     </motion.aside>
   );
 };

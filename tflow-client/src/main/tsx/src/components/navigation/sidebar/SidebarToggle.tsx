@@ -1,15 +1,20 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { motion } from 'framer-motion';
-import { FiChevronsRight } from 'react-icons/fi';
+import { FiChevronsRight, FiChevronsLeft } from 'react-icons/fi';
 
 const SidebarToggle = ({ isExpanded, setIsExpanded }: { isExpanded: boolean; setIsExpanded: Dispatch<SetStateAction<boolean>> }) => {
   const handleClick = () => {
     setIsExpanded((prevState) => !prevState);
   };
+
+  const toggleIcon = isExpanded ? <FiChevronsRight /> : <FiChevronsLeft />;
+
   return (
-    <motion.span layout className={'mt-auto w-full justify-items-center pb-6'} onClick={handleClick}>
-      <FiChevronsRight className={`transition-transform ${isExpanded && 'rotate-180'}`} />
-    </motion.span>
+    <button
+      className={'pointer absolute -right-3 top-9 z-10 flex h-6 w-6 items-center justify-center rounded-[16px] border border-font'}
+      onClick={handleClick}
+    >
+      {toggleIcon}
+    </button>
   );
 };
 

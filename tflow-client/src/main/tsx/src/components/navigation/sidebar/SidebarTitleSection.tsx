@@ -4,15 +4,15 @@ import TfLogo from '../../../assets/logo.svg?react';
 
 const SidebarTitleSection = ({ isExpanded }: { isExpanded: boolean }) => {
   const title = isExpanded && (
-    <motion.div layout initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.125 }}>
-      <span className="font-bold">Massimo</span>
+    <motion.div>
+      <span className="font-bold">TaskFlow</span>
     </motion.div>
   );
 
   return (
-    <div className="my-6 pb-3">
+    <div className="my-6 flex h-10 w-full items-center gap-4 rounded-md p-6">
       <div className="flex items-center justify-center">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <motion.div layout>
             <TfLogo />
           </motion.div>
