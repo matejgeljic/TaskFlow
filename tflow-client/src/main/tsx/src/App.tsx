@@ -1,17 +1,8 @@
 import React from 'react';
-import { Sidebar } from './components/navigation/Sidebar';
-import { Topbar } from './components/navigation/Topbar';
+import PageContent from './components/navigation/PageContent';
 
 const App = () => {
-  return (
-    <main className="flex bg-base">
-      <Sidebar />
-      <div className={'w-full'}>
-        <Topbar />
-        content
-      </div>
-    </main>
-  );
+  return <PageContent />;
 };
 
 export default App;
