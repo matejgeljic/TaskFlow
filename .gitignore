@@ -39,3 +39,5 @@ node_modules/
 coverage/
 node/
 /tflow-client/src/main/tsx/dist
+
+*storybook.log
