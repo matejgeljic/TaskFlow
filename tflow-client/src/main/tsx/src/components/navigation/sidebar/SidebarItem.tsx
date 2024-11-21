@@ -26,7 +26,11 @@ const SidebarItem = ({ Icon, title, selected, setSelected, isExpanded, path }: S
   );
 
   return (
-    <motion.div layout onClick={handleClick} className={'flex h-10 w-full cursor-pointer items-center gap-4 rounded-md p-6 ' + titleClass}>
+    <motion.div
+      layout
+      onClick={handleClick}
+      className={'flex h-10 w-full cursor-pointer items-center gap-4 rounded-md p-6 hover:bg-primaryPressed hover:text-white ' + titleClass}
+    >
       <motion.span className="grid h-full w-10 place-content-center text-lg">
         <Icon />
       </motion.span>
