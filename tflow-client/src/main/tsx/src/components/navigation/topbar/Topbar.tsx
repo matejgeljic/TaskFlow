@@ -7,7 +7,7 @@ const Topbar = () => {
 
   return (
     <motion.div layout className={'h-20 bg-white pl-6 pt-9 font-bold'}>
-      <span>{currentTitle}</span>
+      <span>{currentTitle!}</span>
     </motion.div>
   );
 };
